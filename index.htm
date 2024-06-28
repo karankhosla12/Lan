@@ -8,16 +8,27 @@
         document.addEventListener("DOMContentLoaded", function() {
             var referrer = document.referrer;
             var currentUrl = window.location.href;
-            var utmParams = "utm_source=example&utm_medium=web&utm_campaign=test";
 
-            // Check if the URL already contains the UTM parameters
+            // UTM parameters to add if the referrer does not contain "LinkedIn"
+            var utmParamsLinkedIn = "utm_source=linkedin&utm_medium=social&utm_campaign=campaign_linkedin";
+            var utmParamsOther = "utm_source=other&utm_medium=web&utm_campaign=campaign_other";
+
+            // Check if the URL already contains any UTM parameters
             var utmParamsPresent = currentUrl.includes("utm_source") || currentUrl.includes("utm_medium") || currentUrl.includes("utm_campaign");
 
-            if (!referrer.includes("LinkedIn") && !utmParamsPresent) {
-                if (currentUrl.includes("?")) {
-                    currentUrl += "&" + utmParams;
+            if (!utmParamsPresent) {
+                if (referrer.includes("LinkedIn")) {
+                    if (currentUrl.includes("?")) {
+                        currentUrl += "&" + utmParamsLinkedIn;
+                    } else {
+                        currentUrl += "?" + utmParamsLinkedIn;
+                    }
                 } else {
-                    currentUrl += "?" + utmParams;
+                    if (currentUrl.includes("?")) {
+                        currentUrl += "&" + utmParamsOther;
+                    } else {
+                        currentUrl += "?" + utmParamsOther;
+                    }
                 }
                 window.location.href = currentUrl;
             }
