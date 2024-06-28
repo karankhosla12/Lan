@@ -9,26 +9,21 @@
             var referrer = document.referrer;
             var currentUrl = window.location.href;
 
-            // UTM parameters to add if the referrer does not contain "LinkedIn"
+            // UTM parameters to add based on referrer
             var utmParamsLinkedIn = "utm_source=linkedin&utm_medium=social&utm_campaign=campaign_linkedin";
             var utmParamsOther = "utm_source=other&utm_medium=web&utm_campaign=campaign_other";
 
             // Check if the URL already contains any UTM parameters
             var utmParamsPresent = currentUrl.includes("utm_source") || currentUrl.includes("utm_medium") || currentUrl.includes("utm_campaign");
 
+            // Determine which UTM parameters to add
+            var utmParamsToAdd = referrer.includes("linkedin") ? utmParamsLinkedIn : utmParamsOther;
+
             if (!utmParamsPresent) {
-                if (referrer.includes("LinkedIn")) {
-                    if (currentUrl.includes("?")) {
-                        currentUrl += "&" + utmParamsLinkedIn;
-                    } else {
-                        currentUrl += "?" + utmParamsLinkedIn;
-                    }
+                if (currentUrl.includes("?")) {
+                    currentUrl += "&" + utmParamsToAdd;
                 } else {
-                    if (currentUrl.includes("?")) {
-                        currentUrl += "&" + utmParamsOther;
-                    } else {
-                        currentUrl += "?" + utmParamsOther;
-                    }
+                    currentUrl += "?" + utmParamsToAdd;
                 }
                 window.location.href = currentUrl;
             }
